@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt_BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="thread.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Forum Estágio</title>
+</head>
+<body>
+    
+    <ul>
+        <li><a href="index.html">Métodos</a></li>
+        <li><a href="thread.html">Topics</a></li>
+    </ul>
+
+<div class="alinhar">
+        <div class="grid-container">
+        
+
+            <div class="Area2">
+                <div class="top-bar">
+                    <h1>
+                        Inside Thread
+                    </h1>
+                </div>
+                <div class="main">
+                    <div class="header">                        
+                    </div>
+                    <h6>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</h6>                   
+                    <div class="comments">
+                    </div>
+                    <textarea></textarea>
+                    <input class="nameauthor">Name
+                    <button id="comment">Adicionar comentário</button>
+                </div>
+                <script src="data.js"></script>
+                <script>
+                        var id = window.location.search.slice(1);
+                        var thread = threads.find(t => t.id == id);
+                        var header = document.querySelector('.header');
+                        var headerHtml = `
+                            <h4 class="title">
+                                ${thread.title}
+                            </h4>
+                            <div class="bottom">
+                                <p class="timestamp">
+                                    ${new Date(thread.date).toLocaleString()}
+                                </p>
+                                <p class="comment-count">
+                                    ${thread.comments.length} comments
+                                </p>
+                            </div>
+                        `
+                        header.insertAdjacentHTML('beforeend', headerHtml)
+                
+                        function addComment(comment) {
+                            var commentHtml = `
+                                <div class="comment">
+                                    <div class="top-comment">
+                                        <p class="user">
+                                            ${comment.author}
+                                        </p>
+                                        <p class="comment-ts">
+                                            ${new Date(comment.date).toLocaleString()}
+                                        </p>
+                                        <p onclick="delspace()" class=delspace>X</p>
+                                    </div>
+                                    <div class="comment-content">
+                                        ${comment.content}
+                                    </div>
+                                    
+                                </div>
+                            `
+                            comments.insertAdjacentHTML('beforeend', commentHtml);
+                        }
+                      
+                        var comments = document.querySelector('.comments');
+                        for (let comment of thread.comments) {
+                            addComment(comment);
+                        }
+                
+                        var btn = document.querySelector('button');
+                        btn.addEventListener('click', function() {
+                            var txt = document.querySelector('textarea');
+                            var comment = {
+                                content: txt.value,
+                                date: Date.now(),
+                                author: 'Victor'
+                            }
+                            addComment(comment);
+                            txt.value = '';
+                            thread.comments.push(comment);
+                            localStorage.setItem('threads', JSON.stringify(threads));
+                        })
+                </script>
+               
+            </div>
+            
+          </div>
+
+    </div>
+
+</body>
+
+</html>
